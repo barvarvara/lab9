@@ -24,21 +24,16 @@ public:
         cout << "]";
     }
 
-
-    static double HeronSquare(double a, double b, double c) {
-        double p = (a + b + c) / 2;
-        double s = sqrt(p * (p - a) * (p - b) * (p - c));
-        return s;
-    }
-
+    // определяет, является ли точка v вершиной треугольника
     bool hasVertex(Point v) const {
         return v1 == v or v2 == v or v3 == v;
     }
 
-    // Если же сумма площадей треугольников AKB, AKC, BKC равна площади треугольника ABC,
-    // то нужно проверить, не равна ли нулю одна из трех площадей.
-    // Если равна, то точка лежит на границе треугольника, иначе – внутри.
-    bool doesContain(Point p) {
+    // Пусть объект представляет собой треугольник ABC (A{v1}, B{v2}, C{v3})
+    // Необходимо проверить, лижит ли точка K{k} внутри треугольника ABC
+    // Если сумма площадей треугольников AKB, AKC, BKC равна площади треугольника ABC, то нужно проверить, не равна ли нулю одна из трех площадей.
+    // Если равна, то точка лежит на границе треугольника, иначе – внутри
+    bool doesContain(Point k) {
         //ABC
         double AB = v1.distance(v2);
         double AC = v1.distance(v3);
@@ -46,12 +41,12 @@ public:
         double sqABC = HeronSquare(AB, AC, BC);
 
         //APB
-        double AP = v1.distance(p);
-        double BP = v2.distance(p);
+        double AP = v1.distance(k);
+        double BP = v2.distance(k);
         double sqAPB = HeronSquare(AP, BP, AB);
 
         //APC
-        double PC = p.distance(v3);
+        double PC = k.distance(v3);
         double sqAPC = HeronSquare(AP, PC, AC);
 
         //BPC
@@ -68,6 +63,13 @@ public:
     }
 
     friend bool operator<(const Triangle &t1, const Triangle &t2);
+
+private:
+    static double HeronSquare(double a, double b, double c) {
+        double p = (a + b + c) / 2;
+        double s = sqrt(p * (p - a) * (p - b) * (p - c));
+        return s;
+    }
 };
 
 #endif //OOP_TRIANGLE_HPP

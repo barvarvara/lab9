@@ -1,0 +1,132 @@
+@startuml lab9
+
+    left to right direction
+    skinparam groupInheritance 2
+    
+    class Point {
+        + double x
+        + double y
+        + double z
+        + void print()
+        + double distance(Point other)
+        + bool operator==(Point p1, Point p2)
+        + bool operator!=(Point p1, Point p2)
+        + bool operator<(Point p1, Point p2)
+        + bool operator>(Point p1, Point p2)
+    }
+
+    class Triangle {
+        + Point v1
+        + Point v2
+        + Point v3
+        + void print()
+        - double HeronSquare(double a, double b, double c)
+        + bool hasVertex(Point v)
+        + doesContain(Point p)
+        + bool operator<(Triangle t1, Triangle t2)
+    }
+
+    class listElements {
+        # list<T> elements
+        + void print()
+        + auto begin()
+        + auto end()
+        + void sort()
+        + void push_back(T &element)
+    }
+
+    class Texture {
+        + double x
+        + double y
+        + void print()
+    }
+
+    ' class listTriangles {
+    '     ' - list<Triangle> triangles
+    '     + listTriangles(list<Triangle> lt)
+    ' }
+
+    class listPoints {
+        ' - listElements<Point> points
+        + listPoints(list<Point> lp)
+        + Point &operator[](int i)
+    }
+
+    ' class listTextures {
+    '     + listPoints(list<Texture> lp)
+    ' }
+
+    listElements <|- listPoints
+    ' listElements <|-- listTriangles
+    ' listElements <|-- listTextures
+
+    Point <-left-* Triangle
+
+    Point <-up-o listPoints
+    ' Triangle <-down-o listTriangles
+
+    ' Texture <-down-o listTextures
+    ' Texture <-right[hidden]- listTextures
+
+    class Object {
+        # listPoints points
+        # listElements<Triangle> triangles
+        # listPoints faces
+        # listElements<Texture> textures
+        + Object(listPoints _points, listTriangles _triangles)
+        + Object(Object &object)
+        + Object(char *fName)
+        + void push_back(Point &_point)
+        + void push_back(Triangle &_triangle)
+        + vector<int> getDigitsVector(string &s)
+        + Point getPoint(const string &string)
+        + bool isPointVertex(Point p)
+        + void print()
+        + void sort()
+        + Object operator+(Object &other)
+    }
+
+    class BaseObject {
+        - Object obj
+        + BaseObject(Object _obj)
+        + void print()
+        + void sort()
+        + Object operator+(Object &other)
+    }
+
+    ' класс, который реализует сложение объектов, состоящих из точек и треугольников
+    class TrianglesObject {
+        - Object obj
+        + void print()
+        + void sort()
+        + Object operator+(Object &other)
+    }
+
+    class FacesObject {
+        - Object obj
+        + void print()
+        + void sort()
+        + Object operator+(Object &other)
+    }
+
+    class TexturesObject {
+        - Object obj
+        + void print()
+        + void sort()
+        + Object operator+(Object &other)
+    }
+
+    Object <|-down- BaseObject
+    BaseObject <|-down- TrianglesObject
+    BaseObject <|-down- FacesObject
+    BaseObject <|-down- TexturesObject
+
+    ' listTriangles <-down-* Object
+    listPoints <-* Object
+    listElements <-down-o Object
+    ' listTextures <-down-* Object
+    ' Texture <-[hidden]- Object
+    Texture <-up[hidden]- Triangle
+    Texture <-left-o Object
+    Triangle <-left-o Object
+@enduml

@@ -48,6 +48,52 @@ public:
     }
 };
 
+template<typename T>
+class listElements {
+private:
+    list<T> elements;
+public:
+    listPoints(list<T> lp = {}) {
+        elements.insert(elements.begin(), lp.begin(), lp.end());
+    }
+
+    T &operator[](int i) {
+        for (auto &x: elements) {
+            if (i == 0)
+                return x;
+            --i;
+        }
+
+        throw out_of_range("listElements::operator[]: Index is out of range!");
+    }
+
+    void push_back(T &el) {
+        elements.push_back(el);
+    }
+
+    void print() {
+        int i = 0;
+        for (auto el: elements) {
+            cout << ++i << ". ";
+            el.print();
+            cout << "\n";
+        }
+    }
+
+    auto begin() const {
+        return elements.begin();
+    }
+
+    auto end() const {
+        return elements.end();
+    }
+
+    void sort() {
+        elements.sort();
+    }
+};
+
+
 class listPoints {
 private:
     list<Point> points;
@@ -92,6 +138,7 @@ public:
     }
 };
 
+
 class Object {
     listPoints points;
     listTriangles triangles;
@@ -104,7 +151,7 @@ public:
     Object(const Object &object) : points(object.points), triangles(object.triangles) {}
 
     // инициализирует объект информацией из формата *.obj,
-    // расположенным в файле с адресом расположения fName
+    // расположенным в файле по адресу fName
     Object(const char *fName);
 
     void push_back(Point &_point) {
@@ -117,7 +164,6 @@ public:
 
     // возвращает вектор цифр из строки s
     static vector<int> getDigitsVector(string &s) {
-
         // удаляет из строки все пробельные символы -> изменить на: удаляет все символы не-цифры
         s.erase(remove(s.begin(), s.end(), ' '), s.end());
 

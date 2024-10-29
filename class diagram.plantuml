@@ -1,0 +1,84 @@
+@startuml lab9
+
+    ' left to right direction
+    
+    class Point {
+        + double x
+        + double y
+        + double z
+        + void print()
+        + double distance(Point other)
+        + bool operator==(Point p1, Point p2)
+        + bool operator!=(Point p1, Point p2)
+        + bool operator<(Point p1, Point p2)
+        + bool operator>(Point p1, Point p2)
+    }
+
+    class Triangle {
+        + Point v1
+        + Point v2
+        + Point v3
+        + void print()
+        - double HeronSquare(double a, double b, double c)
+        + bool hasVertex(Point v)
+        + doesContain(Point p)
+        + bool operator<(Triangle t1, Triangle t2)
+    }
+
+    class listTriangles {
+        - list<Triangle> triangles
+
+        + listTriangles(list<Triangle> lt)
+        + void push_back(Triangle &triangle)
+        + void print()
+        + auto begin()
+        + auto end()
+        + void sort()
+    }
+
+    class listPoints {
+        - list<Point> points
+
+        + listPoints(list<Point> lp)
+        + Point &operator[](int i)
+        + void push_back(Point &point)
+        + void print()
+        + auto begin()
+        + auto end()
+        + void sort()
+    }
+
+    Point <-* Triangle
+    Point <-down-o listPoints
+    Triangle <-down-o listTriangles
+
+    class Object {
+        - listPoints points
+        - listTriangles triangles
+
+        + Object(listPoints _points, listTriangles _triangles)
+        + Object(Object &object)
+        + Object(char *fName)
+        + void push_back(Point &_point)
+        + void push_back(Triangle &_triangle)
+        + vector<int> getDigitsVector(string &s)
+        + Point getPoint(const string &string)
+        + void print()
+        + void sort()
+        + bool isPointVertex(Point p)
+        + Object operator+(Object &other)
+    }
+
+    listTriangles <-down-* Object
+    listPoints <-down-* Object
+@enduml
+
+
+
+@startuml test
+    Object <|-- ArrayList
+
+    Object : equals()
+    ArrayList : Object[] elementData
+    ArrayList : size()
+@enduml
